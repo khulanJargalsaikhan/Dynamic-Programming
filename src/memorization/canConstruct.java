@@ -1,6 +1,5 @@
 package memorization;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +9,7 @@ public class canConstruct {
 		System.out.println(canConstruct1("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));   // true
 		System.out.println(canConstruct1("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));  // false
 		System.out.println(canConstruct1("", new String[] {"cat", "dog", "mouse"}));  // true (because it's base case)
-		System.out.println(canConstruct1("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", new String[] {"e", "ee", "eee", "eeee"}));  // false
+		//System.out.println(canConstruct1("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", new String[] {"e", "ee", "eee", "eeee"}));  // false
 		
 		System.out.println(canConstructMemo("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));   // true
 		System.out.println(canConstructMemo("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));  // false
