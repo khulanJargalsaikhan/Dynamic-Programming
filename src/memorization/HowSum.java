@@ -12,7 +12,7 @@ public class HowSum {
 		System.out.println(howSum2(8, new int[] {2,3,5})); // [2,2,2,2], [3,5] (output depends on input order)
 		System.out.println(howSum2(300, new int[] {7,14})); // null 
 	}
-	/*
+	/* Medium-problem
 	 * Write a function howSum(targetSum, nums) that takes in a targetSum and an array of numbers as arguments.
 	 * The function should return an array containing any combination of elements that add up to exactly 
 	 * the targetSum. If there is no combination that adds up to the targetSum, then return null.
@@ -21,8 +21,8 @@ public class HowSum {
 	 */
 
 	//recursive solution  
-	//n = targetSum
-	//m = nums.length
+	//m = targetSum
+	//n = nums.length
 	//time: O(n^m * m)
 	//space: O(m)
 	public static ArrayList<Integer> howSum(int targetSum, int[] nums) {
@@ -46,8 +46,8 @@ public class HowSum {
 	
 	
 	//memorized solution  
-	//n = targetSum
-	//m = nums.length
+	//m = targetSum
+	//n = nums.length
 	//time: O(n * m^2)
 	//space: O(m^2)   each m key (all unique values), and values (ArrayList of Integer)
 	public static ArrayList<Integer> howSum2(int targetSum, int[] nums) {

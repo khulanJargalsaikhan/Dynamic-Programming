@@ -11,7 +11,7 @@ public class CanSum {
 		System.out.println(canSum2(300, new int[] {7,14})); //false 
 
 	}
-/*
+/* Easy-problem
  Write a function canSum(targerSum, number) that takes in a targetSum and an array of numbers as arguments.
  The function should return a boolean indicating whether or not it is possible to generate the targetSum 
  using numbers from the array.
@@ -20,8 +20,8 @@ public class CanSum {
  
  */
 	//recursive solution  
-	//n=targetSum
-	//m=nums.length
+	//m = targetSum
+	//n = nums.length
 	//time complexity O(n^m) which exponential
 	//space complexity O(m)
 	public static boolean canSum(int targetSum, int[] nums) {
@@ -40,8 +40,8 @@ public class CanSum {
 	
 	
 	//memorized solution  
-	//n=targetSum
-	//m=nums.length
+	//m = targetSum
+	//n = nums.length
 	//time complexity O(n*m)
 	//space complexity O(m)
 	public static boolean canSum2(int targetSum, int[] nums) {
