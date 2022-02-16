@@ -1,4 +1,4 @@
-package memorization;
+package memorization_tabulation;
 
 import java.util.ArrayList;
 

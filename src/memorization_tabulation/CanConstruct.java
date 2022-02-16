@@ -1,14 +1,14 @@
-package memorization;
+package memorization_tabulation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class canConstruct {
+public class CanConstruct {
 
 	public static void main(String[] args) {
-		System.out.println(canConstruct1("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));   // true
-		System.out.println(canConstruct1("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));  // false
-		System.out.println(canConstruct1("", new String[] {"cat", "dog", "mouse"}));  // true (because it's base case)
+		System.out.println(canConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));   // true
+		System.out.println(canConstruct("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));  // false
+		System.out.println(canConstruct("", new String[] {"cat", "dog", "mouse"}));  // true (because it's base case)
 		//System.out.println(canConstruct1("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", new String[] {"e", "ee", "eee", "eeee"}));  // false
 		
 		System.out.println(canConstructMemo("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));   // true
@@ -27,14 +27,14 @@ public class canConstruct {
 	// n = wordBank.length;
 	// time: O(n^m *m)
 	// space: O(m*m)
-	public static boolean canConstruct1(String target, String[] wordBank) {
+	public static boolean canConstruct(String target, String[] wordBank) {
 		//base case
 		if(target.equals("")) return true;
 
 		for(int i=0; i<wordBank.length; i++) {
 			if(target.indexOf(wordBank[i]) == 0) {
 				String suffix = target.substring(wordBank[i].length());
-				if (canConstruct1(suffix, wordBank) == true) {
+				if (canConstruct(suffix, wordBank) == true) {
 					return true;
 				}
 			}
