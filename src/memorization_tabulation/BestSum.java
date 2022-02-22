@@ -12,10 +12,18 @@ public class BestSum {
 		System.out.println(bestSum(8, new int[] {2,3,5})); 			// [3,5]
 		//System.out.println(bestSum(100, new int[] {1,2,5,25})); 		// [25,25,25,25]
 		
+		System.out.println("-------- Memorization Strategy ---------");
 		System.out.println(bestSum2(7, new int[] {5,3,4,7})); 		// [7] 
 		System.out.println(bestSum2(8, new int[] {1,4,5})); 		// [4,4]
 		System.out.println(bestSum2(8, new int[] {2,3,5})); 		// [3,5]
 		System.out.println(bestSum2(100, new int[] {1,2,5,25})); 	// [25,25,25,25]
+		
+		
+		System.out.println("-------- Tabulation Strategy ---------");
+		System.out.println(bestSumTab(7, new int[] {5,3,4,7})); 		// [7] 
+		System.out.println(bestSumTab(8, new int[] {1,4,5})); 		// [4,4]
+		System.out.println(bestSumTab(8, new int[] {2,3,5})); 		// [3,5]
+		System.out.println(bestSumTab(100, new int[] {1,2,5,25})); 	// [25,25,25,25]
 
 	}
 	//	Harder-problem
@@ -93,6 +101,62 @@ public class BestSum {
 		
 		memo.put(targetSum, shortestCombination);
 		return shortestCombination;
+	}
+	
+	
+	//	Tabulation strategy  
+	//	m = targetSum
+	//	n = numbers.length 
+	//	Time: O(m^2 * n)  -  Space: O(m^2)
+	public static ArrayList<Integer> bestSumTab(int targetSum, int[] numbers) {
+
+		if (targetSum == 0) new ArrayList<Integer>();
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<Integer>[] table = new ArrayList[targetSum + 1];
+
+		//base case
+		table[0] = new ArrayList<Integer>();
+
+		// **** iterate through the table ****
+		for (int i = 0; i <= targetSum; i++) {
+			if (table[i] != null)
+				// **** loop through the numbers array ****
+				for (int j = 0; j < numbers.length; j++) {
+					int num = numbers[j];
+	
+					// **** skip this index (out of range) ****
+					if (i+num > targetSum)
+						continue;
+
+					//if destination index is null, then create new array list and copy the src and num to it
+					if (table[i+num] == null) {
+						table[i+num] = new ArrayList<Integer>();
+						
+						// **** copy all elements from table[i] to table[i+num] ****
+						ArrayList<Integer> src = table[i]; 
+						ArrayList<Integer> dst = table[i+num];
+						dst.clear();
+						dst.addAll(src);
+						dst.add(num);
+					} else { //if destination index is not null, we need to compare old array list with new array list to find out the shortest
+						ArrayList<Integer> olddst = table[i+num];
+						ArrayList<Integer> src = table[i];
+						ArrayList<Integer> newdst = new ArrayList<>();;
+						newdst.addAll(src);
+						newdst.add(num);
+						
+						// if this current combination is shorter than what is already stored
+						if(olddst.size() > newdst.size()) {
+							olddst.clear();
+							olddst.addAll(src);
+							olddst.add(num);
+						}
+					}
+				}
+		}
+
+		return table[targetSum];
 	}
 
 
