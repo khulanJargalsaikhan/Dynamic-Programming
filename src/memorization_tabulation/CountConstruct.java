@@ -10,11 +10,19 @@ public class CountConstruct {
 		System.out.println(countConstruct1("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})); // 0
 		System.out.println(countConstruct1("enterapotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"})); //4 
 		//System.out.println(countConstruct1("eeeeeeeeeeeeeeeeeeeeeeeeeeeeef", new String[] {"e", "ee", "eee", "eeee"})); // 0
-		
+
+		System.out.println("-------- Memorization Strategy ---------");
 		System.out.println(countConstructMemo("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));  // 1
 		System.out.println(countConstructMemo("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})); // 0
 		System.out.println(countConstructMemo("enterapotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"})); //4 
 		System.out.println(countConstructMemo("eeeeeeeeeeeeeeeeeeeeeeeeeeeeef", new String[] {"e", "ee", "eee", "eeee"})); // 0
+
+		System.out.println("-------- Tabulation Strategy ---------");
+		System.out.println(countConstructTab("purple", new String[] {"purp", "p", "ur", "le", "purpl"}));  // 2
+		System.out.println(countConstructTab("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}));  // 1
+		System.out.println(countConstructTab("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})); // 0
+		System.out.println(countConstructTab("enterapotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"})); //4 
+		System.out.println(countConstructTab("eeeeeeeeeeeeeeeeeeeeeeeeeeeeef", new String[] {"e", "ee", "eee", "eeee"})); // 0
 
 
 	}
@@ -67,4 +75,29 @@ public class CountConstruct {
 		memolist.put(target, count);
 		return count;
 	}
+
+
+	//	Tabulation strategy  
+	//	m = targetSum
+	//	n = numbers.length 
+	//	Time: O(m^2 * n)  -  Space: O(m)
+	public static int countConstructTab(String target, String[] wordBank) {
+
+		int[] table = new int[target.length()+1]; //1 extra slot for substring up to, but not including logic
+
+		//base case
+		table[0] = 1; // saying 1 way to make this string (empty string)
+
+		for (int i=0; i<=target.length(); i++) {
+			for(String word : wordBank) {
+				// if the word matches the characters starting at position i
+				if(i+word.length()<table.length && target.substring(i, i+word.length()).equals(word)) {
+					table[i+word.length()] += table[i];
+				}
+			}
+		}
+		return table[target.length()];
+	}
+
+
 }
