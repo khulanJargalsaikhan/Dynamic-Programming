@@ -2,34 +2,42 @@ package memorization_tabulation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class AllConstruct {
 
 	public static void main(String[] args) {
-//		System.out.println("-------- Memorization Strategy ---------");
-//		System.out.println(allConstruct("purple", new String[] {"purp", "p", "ur", "le", "purpl"}));
-//		// 	[["purp", "le"], ["p", "ur", "p", "le"]]
-//		System.out.println(allConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
-//		// 	[["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
-//		System.out.println(allConstruct("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
-//		// 	[]
-		
-		
-		System.out.println("-------- Tabulation Strategy ---------");
-		//System.out.println(allConstructTab("purple", new String[] {"purp", "p", "ur", "le", "purpl"}));
+		System.out.println("-------- Recursion without memorization ---------");
+		System.out.println(allConstruct("purple", new String[] {"purp", "p", "ur", "le", "purpl"}));
 		// 	[["purp", "le"], ["p", "ur", "p", "le"]]
-		System.out.println(allConstructTab("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
+		System.out.println(allConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
 		// 	[["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
-		//System.out.println(allConstructTab("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+		System.out.println(allConstruct("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+		// 	[]
+		System.out.println(allConstruct("aaaaaaaaaaaaaaaaaaaaaaz", new String[] {"a", "aa", "aaa", "aaaa", "aaaaa"}));
 		// 	[]
 		
 		
-		System.out.println("-------- Tabulation Strategy from internet ---------");
-		System.out.println(Arrays.deepToString(allConstructTabulation("purple", new String[] {"purp", "p", "ur", "le", "purpl"})) );
+		System.out.println("-------- Memorization strategy ---------");
+		System.out.println(allConstructMemo("purple", new String[] {"purp", "p", "ur", "le", "purpl"}));
+		// 	[["purp", "le"], ["p", "ur", "p", "le"]]
+		System.out.println(allConstructMemo("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd", "ef", "c"}));
+		// 	[["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
+		System.out.println(allConstructMemo("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
+		// 	[]
+		System.out.println(allConstructMemo("aaaaaaaaaaaaaaaaaaaaaaz", new String[] {"a", "aa", "aaa", "aaaa", "aaaaa"}));
+		// 	[]
+		
+
+		System.out.println("-------- Tabulation Strategy ---------");
+		//System.out.println(Arrays.deepToString(allConstructTabulation("purple", new String[] {"purp", "p", "ur", "le", "purpl"})) );
 		// 	[["purp", "le"], ["p", "ur", "p", "le"]]
 		System.out.println(Arrays.deepToString(allConstructTabulation("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd", "ef", "c"})) );
 		// 	[["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
-		System.out.println(Arrays.deepToString(allConstructTabulation("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})) );
+		//System.out.println(Arrays.deepToString(allConstructTabulation("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})) );
+		// 	[]
+		//System.out.println(Arrays.deepToString(allConstructTabulation("aaaaaaaaaz", new String[] {"a", "aa", "aaa", "aaaa", "aaaaa"})));
 		// 	[]
 		
 		
@@ -41,92 +49,153 @@ public class AllConstruct {
 	 * combination that constructs the 'target'.
 	 * You may reuse elements of 'wordBank' as many times as needed.
 	 */
-	// m = target.length;
-	// n = wordBank.length;
-	// time: O()
-	// space: O()
-	public static ArrayList<ArrayList<String>> allConstruct(String target, String[] wordBank){
-		//base case
-		if(target.equals("")) return new ArrayList<ArrayList<String>>();
 
-		ArrayList<ArrayList<String>> result = new ArrayList<>();
-		ArrayList<String> inner = new ArrayList<>();
-
-		for (int i=0; i<wordBank.length; i++) {
-			if(target.indexOf(wordBank[i]) == 0) {
-				String suffix = target.substring(wordBank[i].length());
-				ArrayList<ArrayList<String>> suffixWays = allConstruct(suffix, wordBank);
-
-
-				//this is not working!!!!
-				inner.add(0, wordBank[i]);
-				suffixWays.add(inner);
-				result.addAll(suffixWays);
-
-
-			}
-
-		}
-
-		return result;
+	
+	 /* Recursive call without memorization.
+	 * 
+	 * m = target.length
+	 * n = wordBank.length
+	 * 
+	 * Time: O(n^m)  Space: O(m)
+	 */
+	static List<List<String>> allConstruct(String target, String[] wordBank) {
+	 
+	    // **** base case(s)****
+	    if (target.length() == 0) return new ArrayList<>(Arrays.asList(new ArrayList<>()));
+	 
+	    // **** initialization ****
+	    List<List<String>> result = new ArrayList<>();
+	 
+	    // **** loop through the word bank making a recursive call (if needed) ****
+	    for (String word : wordBank) {
+	 
+	        // **** recursive call (if word is a prefix of target) ****
+	        if (target.indexOf(word) == 0) {
+	 
+	            // **** generate suffix for target ****
+	            String suffix = target.substring(word.length());
+	 
+	            // **** make recursive call ****
+	            List<List<String>> suffixWays = allConstruct(suffix, wordBank);
+	 
+	            // **** ****
+	            List<List<String>> targetWays = new ArrayList<>();
+	             
+	            // **** add prefix to the head of each list ****
+	            for (int i = 0; i < suffixWays.size(); i++) {
+	 
+	                // **** create a new list ****
+	                List<String> tmp = new ArrayList<>(suffixWays.get(i));
+	 
+	                // **** add prefix to this list ****
+	                tmp.add(0, word);
+	 
+	                // **** add this list to this list of lists ****
+	                targetWays.add(tmp);
+	            }
+	 
+	            // **** add lists to result ****
+	            for (int i = 0; i < targetWays.size(); i++) 
+	                result.add(new ArrayList<>(targetWays.get(i)));
+	        }
+	    }
+	 
+	    // **** return all possible combinations ****
+	    return result;
 	}
-
+	
+	
+	
+	 /* Recursive call with memorization.
+	  * 
+	  * m = target.length
+	  * n = wordBank.length
+	  * 
+	  * Time: O(n^m)  Space: O(m)
+	  */
+	 static List<List<String>> allConstructMemo(String target, String[] wordBank) {
+	 
+	     // **** sanity check(s) ****
+	     if (target.length() == 0) return new ArrayList<>(Arrays.asList(new ArrayList<>()));
+	 
+	     // **** initialization ****
+	     HashMap<String, List<List<String>>> memo = new HashMap<>();
+	 
+	     // **** recursive call ****
+	     List<List<String>> ans = allConstructMemo(target, wordBank, memo);
+	 
+	     // ???? ????
+	     System.out.println("<<< memo: " + memo.toString());
+	 
+	     // **** return ans ****
+	     return ans;
+	 }
+	
+	 /**
+	  * Recursive call with memorization.
+	  */
+	 static List<List<String>> allConstructMemo( String target, 
+	                                             String[] wordBank,
+	                                             HashMap<String, List<List<String>>> memo) {
+	  
+	     // **** base case(s)****
+	     if (memo.containsKey(target)) return memo.get(target);
+	     if (target.length() == 0) return new ArrayList<>(Arrays.asList(new ArrayList<>()));
+	  
+	     // **** initialization ****
+	     List<List<String>> result = new ArrayList<>();
+	  
+	     // **** loop through the word bank making a recursive call (if needed) ****
+	     for (String word : wordBank) {
+	  
+	         // **** recursive call (if word is a prefix of target) ****
+	         if (target.indexOf(word) == 0) {
+	  
+	             // **** generate suffix for target ****
+	             String suffix = target.substring(word.length());
+	  
+	             // **** make recursive call ****
+	             List<List<String>> suffixWays = allConstructMemo(suffix, wordBank, memo);
+	  
+	             // **** ****
+	             List<List<String>> targetWays = new ArrayList<>();
+	              
+	             // **** add prefix to the head of each list ****
+	             for (int i = 0; i < suffixWays.size(); i++) {
+	  
+	                 // **** create a new list ****
+	                 List<String> tmp = new ArrayList<>(suffixWays.get(i));
+	  
+	                 // **** add prefix to this list ****
+	                 tmp.add(0, word);
+	  
+	                 // **** add this list to this list of lists ****
+	                 targetWays.add(tmp);
+	             }
+	  
+	             // **** add lists to result ****
+	             for (int i = 0; i < targetWays.size(); i++) 
+	                 result.add(new ArrayList<>(targetWays.get(i)));
+	         }
+	     }
+	  
+	     // **** save the key-value pair ****
+	     memo.put(target, result);
+	  
+	     // **** return all possible combinations ****
+	     return result;
+	 }
+	 
+	 
+	 
+	 
+	 
 
 		//	Tabulation strategy  
 		//	m = targetSum
 		//	n = numbers.length 
 		//	Time: O(n^m)  -  Space: O(n^m)   -> Exponential complexity
-
-	public static ArrayList<ArrayList<String>> allConstructTab(String target, String[] wordBank) {
-
-		@SuppressWarnings("unchecked")
-		ArrayList<ArrayList<String>>[] table = new ArrayList[target.length()+1];
-
-		//base case
-		table[0] = new ArrayList<ArrayList<String>>();
-
-
-		for (int i=0; i<=target.length(); i++) {
-			if (table[i] != null) {
-				for(String word : wordBank) {
-					// if the word matches the characters starting at position i
-					if(i+word.length()<table.length && target.substring(i, i+word.length()).equals(word)) {
-						
-						ArrayList<ArrayList<String>> temp = new ArrayList<>();
-						temp = table[i];
-
-						if (!temp.isEmpty()) {	
-							for (int k=0; k<temp.size(); k++) {
-								temp.get(k).add(word);
-							}
-						} else {
-							ArrayList<String> al = new ArrayList<>();
-							al.add(word);
-							temp.add(al);
-						}
-
-						if (table[i+word.length()] == null) {
-							table[i+word.length()] = new ArrayList<ArrayList<String>>();
-						}
-						 
-						table[i+word.length()].addAll(temp);
-						
-						temp.clear();
-
-					}
-					
-				}
-			}
-		}
-		
-		return table[target.length()];
-	}
-
-
-
-	
-	
-	//from internet
+	//solution from Internet (https://www.johncanessa.com/2021/06/24/all-construct-tabulation/)
 	static String[][] allConstructTabulation(String target, String[] wordBank) {
 		 
 	    // **** sanity check(s) [[]]****
@@ -197,7 +266,7 @@ public class AllConstruct {
 	                // **** append word to destination list ****
 	                dstLst.add(word);
 	 
-	                // **** add destination list to destinaltion list of lists ****
+	                // **** add destination list to destination list of lists ****
 	                dst.add(dstLst);
 	            }
 	 
