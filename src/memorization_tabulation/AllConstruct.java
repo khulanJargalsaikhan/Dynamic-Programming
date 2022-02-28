@@ -1,6 +1,7 @@
 package memorization_tabulation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AllConstruct {
 
@@ -22,6 +23,14 @@ public class AllConstruct {
 		//System.out.println(allConstructTab("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"}));
 		// 	[]
 		
+		
+		System.out.println("-------- Tabulation Strategy from internet ---------");
+		System.out.println(Arrays.deepToString(allConstructTabulation("purple", new String[] {"purp", "p", "ur", "le", "purpl"})) );
+		// 	[["purp", "le"], ["p", "ur", "p", "le"]]
+		System.out.println(Arrays.deepToString(allConstructTabulation("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd", "ef", "c"})) );
+		// 	[["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
+		System.out.println(Arrays.deepToString(allConstructTabulation("skateboard", new String[] {"bo", "rd", "ate", "t", "ska", "sk", "boar"})) );
+		// 	[]
 		
 		
 	}
@@ -115,6 +124,110 @@ public class AllConstruct {
 
 
 
+	
+	
+	//from internet
+	static String[][] allConstructTabulation(String target, String[] wordBank) {
+		 
+	    // **** sanity check(s) [[]]****
+	    if (target.length() == 0) {
+	        String[][] ans = new String[1][1];
+	        ans[0] = new String[] {""};
+	        return ans;
+	    }
+	 
+	    // **** create and initialize table ****
+	    ArrayList<ArrayList<ArrayList<String>>> table = new ArrayList<ArrayList<ArrayList<String>>>();
+	    for (int i = 0; i < target.length() + 1; i++)
+	        table.add(i, new ArrayList<ArrayList<String>>());
+	    ArrayList<ArrayList<String>> lol = table.get(0);
+	    lol.add(new ArrayList<String>());
+	 
+	    // ???? ????
+	    System.out.println("<<<  table: " + table.toString() + " size: " + table.size());
+	 
+	    // **** iterate through the table ****
+	    for (int i = 0; i < table.size(); i++) {
+	 
+	        // **** get to the current list of lists ****
+	        lol = table.get(i);
+	 
+	        // **** if blank entry (skip) ****
+	        if (lol.size() == 0)
+	            continue;
+	 
+	        // **** iterate through the word bank ****
+	        for (int j = 0; j < wordBank.length; j++) {
+	 
+	            // **** for ease of use ****
+	            String word = wordBank[j];
+	 
+	            // **** generate index ****
+	            int ndx = i + word.length();
+	 
+	            // **** if we can NOT extract prefix from target (skip) ****
+	            if (ndx > target.length())
+	                continue;
+	 
+	            // **** extract prefix from the target ****
+	            String prefix = target.substring(i, ndx);
+	 
+	            // **** if word and prefix do NOT match (skip) ****
+	            if (!word.equals(prefix))
+	                continue;
+	 
+	            // **** source list of lists ****
+	            ArrayList<ArrayList<String>> src = table.get(i);
+	 
+	            // **** destination list of lists ****
+	            ArrayList<ArrayList<String>> dst = table.get(ndx);
+	 
+	            // **** copy source list(s) to this table entry ****
+	            for (int k = 0; k < src.size(); k++) {
+	 
+	                // **** source list to copy ****
+	                ArrayList<String> srcLst = src.get(k);
+	 
+	                // **** destination list ****
+	                ArrayList<String> dstLst = new ArrayList<String>();
+	 
+	                // **** add source to destination list ****
+	                dstLst.addAll(srcLst);
+	 
+	                // **** append word to destination list ****
+	                dstLst.add(word);
+	 
+	                // **** add destination list to destinaltion list of lists ****
+	                dst.add(dstLst);
+	            }
+	 
+	            // ???? ????
+	            System.out.println("<<<  table: " + table.toString() + " size: " + table.size());
+	        }
+	    }
+	 
+	    // **** get last list of lists in table ****
+	    ArrayList<ArrayList<String>> ansLst = table.get(target.length());
+	 
+	    // **** 2D array to hold answer ****
+	    String[][] ans = new String[ansLst.size()][];
+	 
+	    // **** traverse the list of lists ****
+	    for (int i = 0; i < ansLst.size(); i++) {
+	 
+	        // **** get this array list ****
+	        ArrayList<String> al = ansLst.get(i);
+	 
+	        // **** generate array from array list ****
+	        String[] arr = al.toArray(String[]::new);
+	 
+	        // **** insert array into 2D array ****
+	        ans[i] = arr;
+	    }
+	 
+	    // **** return 2D array ****
+	    return ans;
+	}
 
 
 }
